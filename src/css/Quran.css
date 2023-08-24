@@ -1,0 +1,40 @@
+/* Gallery.css */
+.gallery-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .refresh-button {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* Adjust the height to your preference */
+    overflow: hidden;
+  }
+  
+  .responsive-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+  }
+  .card-quran{
+    filter: drop-shadow(0 0 1em #0f1011aa);
+  }
+  .card-quran:hover {
+    filter: drop-shadow(0 0 2em #9deaffaa);
+  }
+  
+.nav-icon:hover {
+  filter: drop-shadow(0 0 2em #9deaffaa);
+}
+  
