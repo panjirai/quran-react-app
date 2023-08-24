@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
 import Layout from '../layouts/layout';
 // import Footer from './Footer';
-import '../css/Quran.css'
+import '../css/Quran.css';
+import 'react-loading-skeleton/dist/skeleton.css'
+import Loading from './Loading';
 
 export default function Quran() {
   const [surahs, setSurahs] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchSurahs = () => {
     fetch(`https://api.npoint.io/99c279bb173a6e28359c/data`)
@@ -14,6 +17,7 @@ export default function Quran() {
       .then((data) => {
         setSurahs(data);
         console.log(data)
+        setIsLoading(false);
       })
       .catch((error) => console.error('Error fetching surahs:', error));
   };
@@ -52,6 +56,8 @@ export default function Quran() {
         </div>
         
         <ReactBootstrap.Row className='g-3'>
+          {isLoading && <Loading cards={15}/>}
+          
           {filteredSurahs.map((surah, index) => (
             <ReactBootstrap.Col key={index}>
               <ReactBootstrap.Card className='card-quran' style={{ boxShadow: 100 }}>

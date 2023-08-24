@@ -32,10 +32,10 @@ export default function Header() {
         <>
         <Navbar collapseOnSelec expand="md" className="bg-body-tertiary justify-content-center" sticky="top">
       <Container >
-      <Navbar.Brand href="/">
+      <Navbar.Brand href="/quran-react-app/">
       <img
               alt=""
-              src="../vite.svg"
+              src="./vite.svg"
               width="30"
               height="30"
               className="d-inline-block align-top"
@@ -45,7 +45,7 @@ export default function Header() {
             {' '}
             <img
               alt=""
-              src="../react.svg"
+              src="./react.svg"
               width="30"
               height="30"
               className="d-inline-block align-top"
