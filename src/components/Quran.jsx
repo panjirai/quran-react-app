@@ -5,14 +5,17 @@ import Layout from '../layouts/layout';
 import '../css/Quran.css';
 import 'react-loading-skeleton/dist/skeleton.css'
 import Loading from './Loading';
+import DetailSurah from './DetailSurah';
 
 export default function Quran() {
   const [surahs, setSurahs] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
+  const [searchInput, setSearchInput] = useState('');
+  const [filteredResults, setFilteredResults] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedSurah, setSelectedSurah] = useState(null);
   const fetchSurahs = () => {
-    fetch(`https://api.npoint.io/99c279bb173a6e28359c/data`)
+    fetch(`https://quran-api-id.vercel.app/surahs`)
       .then((response) => response.json())
       .then((data) => {
         setSurahs(data);
@@ -28,9 +31,7 @@ export default function Quran() {
 
  
 
-  const filteredSurahs = surahs.filter((surah) =>
-    surah.nama.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+ 
   document.addEventListener('play', function(e) {
     var audios = document.getElementsByTagName('audio');
 
@@ -40,53 +41,100 @@ export default function Quran() {
         }
     }
 }, true);
+const searchItems = (searchValue) => {
+  setSearchInput(searchValue)
+  if (searchInput !== '') {
+      const filteredData = surahs.filter((item) => {
+          return Object.values(item).join('').toLowerCase().includes(searchInput.toLowerCase())
+      })
+      setFilteredResults(filteredData)
+  }
+  else{
+      setFilteredResults(surahs)
+  }
+}
+const detailSurah = (surah) => {
+  setSelectedSurah(surah);
+  setShowModal(true);
+};
   return (
     <>
       <Layout />
       <ReactBootstrap.Container>
         
         {/* Search Form */}
-        <div className="mb-3 mt-3">
-          <ReactBootstrap.FormControl
-            type="text"
-            placeholder="Search by Surah name"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+        <ReactBootstrap.InputGroup className="mb-3 mt-4">
+        <ReactBootstrap.Form.Control
+          placeholder="Search by name..."
+          aria-label="Search by name..."
+          aria-describedby="basic-addon2"
+          id="seacrhId"
+          name="search"
+          onChange={(e) => searchItems(e.target.value)}
+        />
+      </ReactBootstrap.InputGroup>
         
-        <ReactBootstrap.Row className='g-3'>
+        <ReactBootstrap.Row className='g-4'>
           {isLoading && <Loading cards={15}/>}
-          
-          {filteredSurahs.map((surah, index) => (
-            <ReactBootstrap.Col key={index}>
-              <ReactBootstrap.Card className='card-quran' style={{ boxShadow: 100 }}>
-                <ReactBootstrap.Card.Body>
-                <ReactBootstrap.Accordion>
-                  <ReactBootstrap.Accordion.Item eventKey="1">
-                  <ReactBootstrap.Accordion.Header>{surah.nomor}. {surah.nama} &nbsp; {surah.asma} 
-              
-                  </ReactBootstrap.Accordion.Header>
-                  <ReactBootstrap.Accordion.Body>
-                  <div dangerouslySetInnerHTML={{__html: surah.keterangan}} />
-                  </ReactBootstrap.Accordion.Body>
-                </ReactBootstrap.Accordion.Item>
-                </ReactBootstrap.Accordion>
-                
-                  <ReactBootstrap.ListGroup.Item className='text-center mt-3'>  <audio controls width="100%" >
-                    <source src={surah.audio} type="audio/mpeg" />
-                    Your browser does not support the audio element.
-                  </audio></ReactBootstrap.ListGroup.Item>
-                
-                
-                  
-                </ReactBootstrap.Card.Body>
-              </ReactBootstrap.Card>
-            </ReactBootstrap.Col>
-          ))}
+          {searchInput.length > 1 ? (
+                    filteredResults.map((surah,index) => {
+                        return (
+                          <ReactBootstrap.Col key={index} md={4} >
+                          <ReactBootstrap.Card className='card-quran' style={{ boxShadow: 100 }}>
+                            <ReactBootstrap.Card.Body>
+                            <ReactBootstrap.Card.Title >{surah.number}. {surah.name}  </ReactBootstrap.Card.Title>
+                            <ReactBootstrap.Card.Subtitle className="mb-2 text-muted">{surah.translation}</ReactBootstrap.Card.Subtitle>
+                 
+                            <ReactBootstrap.Accordion>
+                              <ReactBootstrap.Accordion.Item eventKey="1">
+                              <ReactBootstrap.Accordion.Header>Deskripsi
+                              </ReactBootstrap.Accordion.Header>
+                              <ReactBootstrap.Accordion.Body>
+                              <div dangerouslySetInnerHTML={{__html: surah.description}} />
+                              </ReactBootstrap.Accordion.Body>
+                            </ReactBootstrap.Accordion.Item>
+                            </ReactBootstrap.Accordion>
+                            <br />
+                              <ReactBootstrap.Card.Link href="#" onClick={() => detailSurah(surah.number)}>Detail</ReactBootstrap.Card.Link>
+                            </ReactBootstrap.Card.Body>
+                          </ReactBootstrap.Card>
+                        </ReactBootstrap.Col>
+                        )
+                    })
+                ) : (
+                    surahs.map((surah,index) => {
+                        return (
+                          <ReactBootstrap.Col key={index} md={4} >
+                          <ReactBootstrap.Card className='card-quran' style={{ boxShadow: 100 }}>
+                            <ReactBootstrap.Card.Body>
+                            <ReactBootstrap.Card.Title >{surah.number}. {surah.name}  </ReactBootstrap.Card.Title>
+                            <ReactBootstrap.Card.Subtitle className="mb-2 text-muted">{surah.translation}</ReactBootstrap.Card.Subtitle>
+                 
+                            <ReactBootstrap.Accordion>
+                              <ReactBootstrap.Accordion.Item eventKey="1">
+                              <ReactBootstrap.Accordion.Header>Deskripsi
+                              </ReactBootstrap.Accordion.Header>
+                              <ReactBootstrap.Accordion.Body>
+                              <div dangerouslySetInnerHTML={{__html: surah.description}} />
+                              </ReactBootstrap.Accordion.Body>
+                            </ReactBootstrap.Accordion.Item>
+                            </ReactBootstrap.Accordion>
+                            <br />
+                              <ReactBootstrap.Card.Link href="#" onClick={() => detailSurah(surah.number)}>Detail</ReactBootstrap.Card.Link>
+                            </ReactBootstrap.Card.Body>
+                          </ReactBootstrap.Card>
+                        </ReactBootstrap.Col>
+                        )
+                    })
+                )}
+         
         </ReactBootstrap.Row>
       </ReactBootstrap.Container>
       <br />
+
+      {showModal && selectedSurah && (
+        <DetailSurah nomor={selectedSurah} onClose={() => setShowModal(false)} />
+      )}
     </>
   );
 }

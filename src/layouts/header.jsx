@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import '../Bootstrap.css'
 import '../css/Quran.css'
 import * as Icon  from "react-icons/bs";
+import DarkModeToggle from "react-dark-mode-toggle";
 
 export default function Header() {
   const [darkMode, setDarkMode] = useState(false);
@@ -51,23 +52,22 @@ export default function Header() {
               className="d-inline-block align-top"
             />
           </Navbar.Brand>
+          
+            <DarkModeToggle
+              onChange={handleModeToggle}
+              checked={darkMode}
+              size={80}
+            />
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+       
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+          <Nav >
             <Nav.Link target="_blank" href="https://github.com/panjirai/">Github <Icon.BsGithub/> </Nav.Link>
             <Nav.Link target="_blank" href="https://www.linkedin.com/in/setiawan-panjirai-6b93a6132/">LinkedIn <Icon.BsLinkedin/> </Nav.Link>
           </Nav>
-          <Nav className='nav-icon'>
-              <Nav.Link onClick={handleModeToggle} >
-                {darkMode ? (
-                  <Icon.BsSunFill /> // Use the appropriate light mode icon
-                ) : (
-                  <Icon.BsFillMoonStarsFill /> // Use the appropriate dark mode icon
-                )}
-              </Nav.Link>
-              
-            </Nav>
+       
         </Navbar.Collapse>
+       
       </Container>
     </Navbar>
     </>
