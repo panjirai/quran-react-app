@@ -8,7 +8,7 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 ## Installation
-
+https://panjirai.github.io/quran-react-app/#
 ## Installation
 
 1. **Install `pnpm` globally if you haven't already:**
