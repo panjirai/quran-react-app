@@ -81,7 +81,7 @@ const DetailSurah = ({ nomor, onClose }) => {
             </ReactBootstrap.Accordion>
             <br />
             <ReactBootstrap.Container className='text-center'>
-            <ReactBootstrap.ListGroup.Item>           <audio controls width="100%" style={{ maxWidth: '350px' }}>
+            <ReactBootstrap.ListGroup.Item><audio controls width="100%" style={{ maxWidth: '350px' }}>
                                     <source src={surahs.audio} type="audio/ogg" />
                                     <source src={surahs.audio} type="audio/mpeg" />
                                     Your browser does not support the audio element.
@@ -93,7 +93,7 @@ const DetailSurah = ({ nomor, onClose }) => {
       </ReactBootstrap.Modal.Body>
       <ReactBootstrap.Modal.Footer>
         <ReactBootstrap.Button variant="secondary" onClick={onClose}>
-          Close
+          Closes
         </ReactBootstrap.Button>
       </ReactBootstrap.Modal.Footer>
     </ReactBootstrap.Modal>
