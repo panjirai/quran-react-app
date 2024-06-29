@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
 
 // eslint-disable-next-line react/prop-types
 const DetailSurah = ({ nomor, onClose }) => {
   const [surahs, setSurah] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [allAudio, setAllAudio] = useState(null);
+  const audioRefs = useRef([]);
 
   const fetchSurah = () => {
     fetch(`https://quran-api-id.vercel.app/surahs/${nomor}`)
@@ -13,10 +13,6 @@ const DetailSurah = ({ nomor, onClose }) => {
       .then((data) => {
         setSurah(data);
         setIsLoading(false);
-
-        // Combine all ayah audios into one audio source
-        const combinedAudio = data.ayahs.map((ayah) => ayah.audio.ahmedajamy).join(',');
-        setAllAudio(combinedAudio);
       })
       .catch((error) => {
         console.error('Error fetching surah:', error);
@@ -27,7 +23,25 @@ const DetailSurah = ({ nomor, onClose }) => {
   useEffect(() => {
     fetchSurah();
   }, [nomor]); // Include nomor as a dependency to refetch when nomor changes
-  console.log(surahs);
+
+  const playAllAyahs = () => {
+    if (audioRefs.current.length > 0) {
+      let currentIndex = 0;
+
+      const playNext = () => {
+        if (currentIndex < audioRefs.current.length) {
+          const currentAudio = audioRefs.current[currentIndex];
+          currentAudio.play();
+          currentAudio.onended = () => {
+            currentIndex += 1;
+            playNext();
+          };
+        }
+      };
+
+      playNext();
+    }
+  };
 
   return (
     <ReactBootstrap.Modal
@@ -72,7 +86,12 @@ const DetailSurah = ({ nomor, onClose }) => {
                       <p>{ayah.arab}</p>
                       <p>{ayah.translation}</p>
                       <p>
-                        <audio controls width="100%" style={{ maxWidth: '350px' }}>
+                        <audio
+                          ref={(el) => (audioRefs.current[index] = el)}
+                          controls
+                          width="100%"
+                          style={{ maxWidth: '350px' }}
+                        >
                           <source src={ayah.audio.ahmedajamy} type="audio/ogg" />
                           <source src={ayah.audio.ahmedajamy} type="audio/mpeg" />
                           Your browser does not support the audio element.
@@ -85,13 +104,9 @@ const DetailSurah = ({ nomor, onClose }) => {
             </ReactBootstrap.Accordion>
             <br />
             <ReactBootstrap.Container className="text-center">
-              <ReactBootstrap.ListGroup.Item>
-                <audio controls width="100%" style={{ maxWidth: '350px' }}>
-                  <source src={allAudio} type="audio/ogg" />
-                  <source src={allAudio} type="audio/mpeg" />
-                  Your browser does not support the audio element.
-                </audio>
-              </ReactBootstrap.ListGroup.Item>
+              <ReactBootstrap.Button variant="primary" onClick={playAllAyahs}>
+                Play All Ayahs
+              </ReactBootstrap.Button>
             </ReactBootstrap.Container>
           </>
         )}
