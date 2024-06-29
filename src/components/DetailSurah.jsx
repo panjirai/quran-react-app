@@ -58,6 +58,14 @@ const DetailSurah = ({ nomor, onClose }) => {
     }
   };
 
+  const togglePlayStop = () => {
+    if (isPlaying) {
+      stopAllAyahs();
+    } else {
+      playAllAyahs();
+    }
+  };
+
   const handleVolumeChange = (e) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
@@ -127,15 +135,12 @@ const DetailSurah = ({ nomor, onClose }) => {
             </ReactBootstrap.Accordion>
             <br />
             <ReactBootstrap.Container className="text-center">
-              <ReactBootstrap.Button variant="primary" onClick={playAllAyahs} disabled={isPlaying}>
-                Play All Ayahs
-              </ReactBootstrap.Button>
-              <ReactBootstrap.Button variant="danger" onClick={stopAllAyahs} disabled={!isPlaying}>
-                Stop
+              <ReactBootstrap.Button variant={isPlaying ? "danger" : "primary"} onClick={togglePlayStop}>
+                {isPlaying ? "Stop" : "Play All Ayahs"}
               </ReactBootstrap.Button>
               <br /><br />
               <ReactBootstrap.Form.Label>Volume</ReactBootstrap.Form.Label>
-              <ReactBootstrap.Form.Range value={volume} onChange={handleVolumeChange} min="0" max="1" step="0.01" />
+              <ReactBootstrap.Form.Range value={volume} onChange={handleVolumeChange} min="0" max="1" step="0.01" style={{ maxWidth: '300px', margin: 'auto' }} />
             </ReactBootstrap.Container>
           </>
         )}
