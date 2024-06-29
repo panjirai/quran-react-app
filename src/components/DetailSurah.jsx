@@ -5,7 +5,10 @@ import * as ReactBootstrap from 'react-bootstrap';
 const DetailSurah = ({ nomor, onClose }) => {
   const [surahs, setSurah] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(1);
   const audioRefs = useRef([]);
+  const currentIndex = useRef(0);
 
   const fetchSurah = () => {
     fetch(`https://quran-api-id.vercel.app/surahs/${nomor}`)
@@ -26,21 +29,41 @@ const DetailSurah = ({ nomor, onClose }) => {
 
   const playAllAyahs = () => {
     if (audioRefs.current.length > 0) {
-      let currentIndex = 0;
-
-      const playNext = () => {
-        if (currentIndex < audioRefs.current.length) {
-          const currentAudio = audioRefs.current[currentIndex];
-          currentAudio.play();
-          currentAudio.onended = () => {
-            currentIndex += 1;
-            playNext();
-          };
-        }
-      };
-
+      setIsPlaying(true);
+      currentIndex.current = 0;
       playNext();
     }
+  };
+
+  const playNext = () => {
+    if (currentIndex.current < audioRefs.current.length) {
+      const currentAudio = audioRefs.current[currentIndex.current];
+      currentAudio.volume = volume;
+      currentAudio.play();
+      currentAudio.onended = () => {
+        currentIndex.current += 1;
+        playNext();
+      };
+    } else {
+      setIsPlaying(false);
+    }
+  };
+
+  const stopAllAyahs = () => {
+    setIsPlaying(false);
+    if (currentIndex.current < audioRefs.current.length) {
+      const currentAudio = audioRefs.current[currentIndex.current];
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    }
+  };
+
+  const handleVolumeChange = (e) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    audioRefs.current.forEach(audio => {
+      if (audio) audio.volume = newVolume;
+    });
   };
 
   return (
@@ -104,16 +127,22 @@ const DetailSurah = ({ nomor, onClose }) => {
             </ReactBootstrap.Accordion>
             <br />
             <ReactBootstrap.Container className="text-center">
-              <ReactBootstrap.Button variant="primary" onClick={playAllAyahs}>
+              <ReactBootstrap.Button variant="primary" onClick={playAllAyahs} disabled={isPlaying}>
                 Play All Ayahs
               </ReactBootstrap.Button>
+              <ReactBootstrap.Button variant="danger" onClick={stopAllAyahs} disabled={!isPlaying}>
+                Stop
+              </ReactBootstrap.Button>
+              <br /><br />
+              <ReactBootstrap.Form.Label>Volume</ReactBootstrap.Form.Label>
+              <ReactBootstrap.Form.Range value={volume} onChange={handleVolumeChange} min="0" max="1" step="0.01" />
             </ReactBootstrap.Container>
           </>
         )}
       </ReactBootstrap.Modal.Body>
       <ReactBootstrap.Modal.Footer>
         <ReactBootstrap.Button variant="secondary" onClick={onClose}>
-          Closes
+          Close
         </ReactBootstrap.Button>
       </ReactBootstrap.Modal.Footer>
     </ReactBootstrap.Modal>

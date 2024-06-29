@@ -47,3 +47,12 @@ To start the development server, run:
 ```sh
 npm run dev
 ```
+
+
+## Deploy github pages
+
+To start the deploy server, run:
+
+```sh
+npm run deploy
+```
