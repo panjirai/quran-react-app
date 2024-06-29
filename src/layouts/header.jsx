@@ -42,7 +42,7 @@ export default function Header() {
               className="d-inline-block align-top"
             />
             {' '}
-            Quran App
+            Quran App V2
             {' '}
             <img
               alt=""
