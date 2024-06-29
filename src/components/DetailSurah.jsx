@@ -113,7 +113,7 @@ const DetailSurah = ({ nomor, onClose }) => {
       </ReactBootstrap.Modal.Body>
       <ReactBootstrap.Modal.Footer>
         <ReactBootstrap.Button variant="secondary" onClick={onClose}>
-          Close
+          Closes
         </ReactBootstrap.Button>
       </ReactBootstrap.Modal.Footer>
     </ReactBootstrap.Modal>
