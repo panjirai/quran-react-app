@@ -21,7 +21,7 @@ export default function Header() {
   }, []);
 
   const handleModeToggle = () => {
-    const newTheme = darkMode ? 'light' : 'dark';
+    const newTheme = darkMode ? 'dark' : 'light';
     setDarkMode(!darkMode);
     
     // Update theme preference in local storage
