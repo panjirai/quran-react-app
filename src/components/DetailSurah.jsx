@@ -125,7 +125,7 @@ const DetailSurah = ({ nomor, onClose }) => {
                         >
                           <source src={ayah.audio.muhammadjibreel} type="audio/ogg" />
                           <source src={ayah.audio.muhammadjibreel} type="audio/mpeg" />
-                          Your browser does not support the audio element.
+                          Your browser does not support the audio element.s
                         </audio>
                       </p>
                     </ReactBootstrap.ListGroup.Item>
