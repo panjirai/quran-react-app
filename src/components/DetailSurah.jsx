@@ -123,8 +123,8 @@ const DetailSurah = ({ nomor, onClose }) => {
                           width="100%"
                           style={{ maxWidth: '350px' }}
                         >
-                          <source src={ayah.audio.ahmedajamy} type="audio/ogg" />
-                          <source src={ayah.audio.ahmedajamy} type="audio/mpeg" />
+                          <source src={ayah.audio.muhammadjibreel} type="audio/ogg" />
+                          <source src={ayah.audio.muhammadjibreel} type="audio/mpeg" />
                           Your browser does not support the audio element.
                         </audio>
                       </p>
