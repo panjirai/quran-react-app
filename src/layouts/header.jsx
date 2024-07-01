@@ -21,7 +21,7 @@ export default function Header() {
   }, []);
 
   const handleModeToggle = () => {
-    const newTheme = darkMode ? 'dark' : 'light';
+    const newTheme = darkMode ? 'light' : 'dark';
     setDarkMode(!darkMode);
     
     // Update theme preference in local storage
@@ -42,7 +42,7 @@ export default function Header() {
               className="d-inline-block align-top"
             />
             {' '}
-            Quran App V2
+            Quran App
             {' '}
             <img
               alt=""
